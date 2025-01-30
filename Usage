@@ -1,0 +1,5 @@
+Prepare spam_emails.csv dataset with the necessary columns (email_content and label).
+Run the model training:
+
+python main.py
+The model will be trained and the accuracy will be printed. You can test the model with custom emails for spam classification.
