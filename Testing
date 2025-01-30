@@ -1,0 +1,4 @@
+Run the unit tests to check if the model is functioning properly:
+
+bash
+pytest tests/test_model.py
