@@ -1,0 +1,68 @@
+model.py (Main Spam Classification Model)
+
+python
+
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+class SpamEmailDetector:
+    def __init__(self):
+        self.model = None
+        self.vectorizer = TfidfVectorizer()
+
+    def train(self, data_path):
+        data = pd.read_csv(data_path)
+        X = data['email_content']
+        y = data['label']  # 'spam' or 'ham' (non-spam)
+        
+        # Transform email content into numerical data
+        X_vect = self.vectorizer.fit_transform(X)
+        
+        # Split data into training and testing sets
+        X_train, X_test, y_train, y_test = train_test_split(X_vect, y, test_size=0.2, random_state=42)
+
+        # Train the Naive Bayes model
+        self.model = MultinomialNB()
+        self.model.fit(X_train, y_train)
+
+        # Test the model and print accuracy
+        y_pred = self.model.predict(X_test)
+        accuracy = accuracy_score(y_test, y_pred)
+        print(f'Model accuracy: {accuracy * 100:.2f}%')
+
+    def predict(self, email_text):
+        if not self.model:
+            raise ValueError("Model is not trained yet.")
+        
+        # Preprocess email and predict
+        email_vect = self.vectorizer.transform([email_text])
+        prediction = self.model.predict(email_vect)
+        return prediction[0]
+
+main.py (Run the Spam Detector)
+
+python
+
+from model import SpamEmailDetector
+
+if __name__ == "__main__":
+    detector = SpamEmailDetector()
+    detector.train("data/spam_emails.csv")
+
+    # Test with a sample email
+    sample_email = "Congratulations! You’ve won a $1000 gift card. Click here to claim it now."
+    result = detector.predict(sample_email)
+    print(f'The email is classified as: {result}')
+2.3 spam_emails.csv (Sample Dataset)
+This dataset should have at least two columns: email_content and label (where label is 'spam' or 'ham').
+
+csv
+
+email_content,label
+"Congratulations! You’ve won a $1000 gift card. Click here to claim it now.",spam
+"Hi John, just wanted to check in about our meeting next week.",ham
+"Get rich quick with this simple investment plan. Click here!",spam
+"Are we still on for lunch tomorrow?",ham
