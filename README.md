@@ -1,0 +1,2 @@
+# SpamFilterAI-Adds-an-AI-flavor-to-the-spam-detection-system
+Spam Email Detector This project implements a Spam Email Detector using Python and machine learning libraries to classify emails as either spam or non-spam (ham). The system uses a Naive Bayes classifier to train the model on a dataset of labeled emails, allowing it to automatically detect spam messages based on the content of the email.
